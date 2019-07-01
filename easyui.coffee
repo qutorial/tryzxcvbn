@@ -1,117 +1,3 @@
-
-test_passwords = '''
-zxcvbn
-qwER43@!
-Tr0ub4dour&3
-correcthorsebatterystaple
-coRrecth0rseba++ery9.23.2007staple$
-
-p@ssword
-p@$$word
-123456
-123456789
-11111111
-zxcvbnm,./
-love88
-angel08
-monkey13
-iloveyou
-woaini
-wang
-tianya
-zhang198822
-li4478
-a6a4Aa8a
-b6b4Bb8b
-z6z4Zz8z
-aiIiAaIA
-zxXxZzXZ
-pässwörd
-alpha bravo charlie delta
-a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9
-a b c 1 2 3
-correct-horse-battery-staple
-correct.horse.battery.staple
-correct,horse,battery,staple
-correct~horse~battery~staple
-WhyfaultthebardifhesingstheArgives’harshfate?
-Eupithes’sonAntinousbroketheirsilence
-Athena lavished a marvelous splendor
-buckmulliganstenderchant
-seethenthatyewalkcircumspectly
-LihiandthepeopleofMorianton
-establishedinthecityofZarahemla
-!"£$%^&*()
-
-D0g..................
-abcdefghijk987654321
-neverforget13/3/1997
-1qaz2wsx3edc
-
-temppass22
-briansmith
-briansmith4mayor
-password1
-viking
-thx1138
-ScoRpi0ns
-do you know
-
-ryanhunter2000
-rianhunter2000
-
-asdfghju7654rewq
-AOEUIDHG&*()LS_
-
-12345678
-defghi6789
-
-rosebud
-Rosebud
-ROSEBUD
-rosebuD
-ros3bud99
-r0s3bud99
-R0$38uD99
-
-verlineVANDERMARK
-
-eheuczkqyq
-rWibMFACxAUGZmxhVncy
-Ba9ZyWABu99[BK#6MBgbH88Tofv)vs$w
-'''
-
-results_tmpl = '''
-{{#results}}
-<table class="result">
-  <tr>
-    <td>Passwort: </td>
-    <td colspan="2"><strong>{{password}}</strong></td>
-  </tr>
-  <tr>
-    <td>guesses_log10: </td>
-    <td colspan="2">{{guesses_log10}}</td>
-  </tr>
-  <tr>
-    <td><strong>Punktestand:</score> </td>
-    <td><strong>{{score}} / 4</strong></td>
-  <tr>
-    <td>function runtime (ms): </td>
-    <td colspan="2">{{calc_time}}</td>
-  </tr>
-  <tr>
-    <td colspan="3">Zeit:</td>
-  </tr>
-  {{& guess_times_display}}
-  {{& feedback_display }}
-  <tr>
-    <td colspan="3"><strong>Passende Sequenz:</strong></td>
-  </tr>
-</table>
-{{& sequence_display}}
-{{/results}}
-'''
-
 guess_times_tmpl = '''
   <tr>
     <td>100 / Stunde:</td>
@@ -137,17 +23,17 @@ guess_times_tmpl = '''
 feedback_tmpl = '''
 {{#warning}}
 <tr>
-  <td>Achtung: </td>
+  <td style="color: red">Achtung: </td>
   <td colspan="2">{{warning}}</td>
 </tr>
 {{/warning}}
 {{#has_suggestions}}
 <tr>
-  <td style="vertical-align: top">suggestions:</td>
-  <td colspan="2"><strong>
+  <td style="vertical-align: top"><strong>So kann man das verbessern:</strong></td>
+  <td colspan="2">
     {{#suggestions}}
     - {{.}} <br />
-    {{/suggestions}}</strong>
+    {{/suggestions}}
   </td>
 </tr>
 {{/has_suggestions}}
@@ -297,14 +183,6 @@ requirejs ['./zxcvbn'], (zxcvbn) ->
   $ ->
     window.zxcvbn = zxcvbn
     results_lst = []
-    for password in test_passwords.split('\n') when password
-      r = zxcvbn(password)
-      round_logs(r)
-      r.sequence_display = Mustache.render(props_tmpl, r)
-      r.guess_times_display = Mustache.render(guess_times_tmpl, r.crack_times_display)
-      r.feedback.has_suggestions = r.feedback.suggestions.length > 0
-      r.feedback_display = Mustache.render(feedback_tmpl, r.feedback)
-      results_lst.push r
 
     rendered = Mustache.render(results_tmpl, {
       results: results_lst,
